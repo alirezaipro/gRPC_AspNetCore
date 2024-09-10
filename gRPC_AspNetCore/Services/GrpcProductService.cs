@@ -50,7 +50,7 @@ namespace gRPC_AspNetCore.Services
 
             return new GetProductByIdReply
             {
-                CreateDate = Timestamp.FromDateTime(product.CreateDate),
+                CreateDate = Timestamp.FromDateTime(DateTime.SpecifyKind(product.CreateDate, DateTimeKind.Utc)),
                 Description = product.Description,
                 Id = product.Id,
                 Price = product.Price,
@@ -71,7 +71,7 @@ namespace gRPC_AspNetCore.Services
             {
                 await responseStream.WriteAsync(new GetAllProductsReply
                 {
-                    CreateDate = Timestamp.FromDateTime(product.CreateDate),
+                    CreateDate = Timestamp.FromDateTime(DateTime.SpecifyKind(product.CreateDate, DateTimeKind.Utc)),
                     Description = product.Description,
                     Id = product.Id,
                     Price = product.Price,
