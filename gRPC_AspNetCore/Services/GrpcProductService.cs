@@ -48,6 +48,15 @@ namespace gRPC_AspNetCore.Services
             if (product == null)
                 return null;
 
+            Metadata headers = new Metadata()
+            {
+                {"fName","Ali" },
+                {"lName","Rezaei" },
+                {"age","24"}
+            };
+
+            await context.WriteResponseHeadersAsync(headers);
+
             return new GetProductByIdReply
             {
                 CreateDate = Timestamp.FromDateTime(DateTime.SpecifyKind(product.CreateDate, DateTimeKind.Utc)),
@@ -113,9 +122,9 @@ namespace gRPC_AspNetCore.Services
             if (product == null)
                 return null;
 
-            product.Title=request.Title;
-            product.Description=request.Description;
-            product.Price=request.Price;
+            product.Title = request.Title;
+            product.Description = request.Description;
+            product.Price = request.Price;
 
             ctx.Products.Update(product);
             await ctx.SaveChangesAsync();
