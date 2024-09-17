@@ -48,6 +48,8 @@ namespace gRPC_AspNetCore.Services
             if (product == null)
                 return null;
 
+            #region Headers
+
             Metadata headers = new Metadata()
             {
                 {"fName","Ali" },
@@ -56,6 +58,12 @@ namespace gRPC_AspNetCore.Services
             };
 
             await context.WriteResponseHeadersAsync(headers);
+
+            #endregion
+
+            context.ResponseTrailers.Add("FirstName", "Ali");
+            context.ResponseTrailers.Add("LastName", "Rezaei");
+            context.ResponseTrailers.Add("SuccessMessage", "GetProdutByIdSuccessfullyDone");
 
             return new GetProductByIdReply
             {
