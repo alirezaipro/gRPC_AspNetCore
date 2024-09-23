@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\ProductService.proto" />
+    <None Remove="Protos\v2\ProductService.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\ProductService.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\v1\ProductService.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\v2\ProductService.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

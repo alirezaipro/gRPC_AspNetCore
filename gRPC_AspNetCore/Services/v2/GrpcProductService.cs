@@ -4,10 +4,11 @@ using Grpc.Core;
 using gRPC_AspNetCore.Context;
 using gRPC_AspNetCore.Models;
 using gRPC_AspNetCore.Protos;
+using gRPC_AspNetCore.Protos.v2;
 using Microsoft.EntityFrameworkCore;
-using static gRPC_AspNetCore.Protos.ProductService;
+using static gRPC_AspNetCore.Protos.v2.ProductService;
 
-namespace gRPC_AspNetCore.Services
+namespace gRPC_AspNetCore.Services.v2
 {
     public class GrpcProductService
         (GrpcContext ctx)
@@ -20,7 +21,7 @@ namespace gRPC_AspNetCore.Services
 
             while (await requestStream.MoveNext())
             {
-                ctx.Products.Add(new Models.Product()
+                ctx.Products.Add(new Product()
                 {
                     CreateDate = DateTime.Now,
                     Description = requestStream.Current.Description,
@@ -94,54 +95,6 @@ namespace gRPC_AspNetCore.Services
                     Price = product.Price,
                     Tilte = product.Title
                 });
-            };
-        }
-
-        public override async Task<RemoveProductByIdReply> RemoveProductById(IAsyncStreamReader<RemoveProductByIdRequest> requestStream, ServerCallContext context)
-        {
-            int removedItemsCount = 0;
-
-            while (await requestStream.MoveNext())
-            {
-                Product? product = await ctx.Products.FirstOrDefaultAsync(p => p.Id == requestStream.Current.Id);
-
-                if (product == null)
-                    continue;
-
-                ctx.Products.Remove(product);
-
-                removedItemsCount++;
-            }
-
-            await ctx.SaveChangesAsync();
-
-            return new RemoveProductByIdReply()
-            {
-                Message = "Remoed products successfully done",
-                RemovedItemsCount = removedItemsCount,
-                Status = 200
-            };
-        }
-
-        public override async Task<UpdateProductReply> UpdateProduct(UpdateProductRequest request, ServerCallContext context)
-        {
-            Product? product = await ctx.Products.FirstOrDefaultAsync(p => p.Id == request.Id);
-
-            if (product == null)
-                return null;
-
-            product.Title = request.Title;
-            product.Description = request.Description;
-            product.Price = request.Price;
-
-            ctx.Products.Update(product);
-            await ctx.SaveChangesAsync();
-
-            return new UpdateProductReply()
-            {
-                Message = "Updated product successfully done",
-                Status = 200,
-                UpdatedItemsCount = 1
             };
         }
     }

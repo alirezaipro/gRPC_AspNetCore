@@ -1,5 +1,4 @@
 using gRPC_AspNetCore.Context;
-using gRPC_AspNetCore.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +21,8 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.MapGrpcService<GrpcProductService>();
+app.MapGrpcService<gRPC_AspNetCore.Services.v1.GrpcProductService>();
+app.MapGrpcService<gRPC_AspNetCore.Services.v2.GrpcProductService>();
 
 if (app.Environment.IsDevelopment())
 {

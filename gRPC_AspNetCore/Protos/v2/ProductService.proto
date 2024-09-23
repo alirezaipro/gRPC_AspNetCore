@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-option csharp_namespace = "gRPC_AspNetCore.Protos";
+package ProductService.V2;
+
+option csharp_namespace = "gRPC_AspNetCore.Protos.v2";
 
 import "google/protobuf/timestamp.proto";
 
@@ -9,11 +11,7 @@ service ProductService{
 
 	rpc GetAllProducts(GetAllProductsRequest) returns (stream GetAllProductsReply);
 
-	rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductReply);
-
 	rpc GetProductById(GetProductByIdRequest) returns (GetProductByIdReply);
-
-	rpc RemoveProductById(stream RemoveProductByIdRequest) returns (RemoveProductByIdReply);
 }
 
 message CreateProductRequest{
@@ -41,17 +39,6 @@ message GetAllProductsReply{
 	google.protobuf.Timestamp createDate=5;
 }
 
-message UpdateProductRequest{
-	int32 id=1;
-	string title=2;
-	string description=3;
-	int32 price=4;
-}
-message UpdateProductReply{
-	int32 status=1;
-	string message=2;
-	int32 updatedItemsCount=3;
-}
 
 message GetProductByIdRequest{
 	int32 id=1;
@@ -63,15 +50,4 @@ message GetProductByIdReply{
 	string description=3;
 	int32 price=4;
 	google.protobuf.Timestamp createDate=5;
-}
-
-
-message RemoveProductByIdRequest{
-	int32 id=1;
-}
-
-message RemoveProductByIdReply{
-	int32 status=1;
-	string message=2;
-	int32 removedItemsCount=3;
 }
